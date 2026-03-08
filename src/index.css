@@ -4,6 +4,10 @@
   padding: 0;
 }
 
+:root {
+  --color-accent: #83bf47;
+}
+
 body {
   font-family: 'Roboto';
   background-color: #001832;
