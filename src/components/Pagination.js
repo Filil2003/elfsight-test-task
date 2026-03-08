@@ -13,7 +13,7 @@ export function Pagination() {
   };
 
   useEffect(() => {
-    const createdPages = Array.from({ length: info.pages }, (_, i) => {
+    const createdPages = Array.from({ length: info?.pages }, (_, i) => {
       const URLWithPage = new URL(apiURL);
 
       URLWithPage.searchParams.set('page', i + 1);
@@ -54,7 +54,9 @@ export function Pagination() {
           {activePage + 1 !== pages.length - 1 && (
             <>
               <Ellipsis>...</Ellipsis>
-              <Page onClick={() => pageClickHandler(pages.length)}>Last »</Page>
+              <Page onClick={() => pageClickHandler(pages.length - 1)}>
+                Last »
+              </Page>
             </>
           )}
         </>
