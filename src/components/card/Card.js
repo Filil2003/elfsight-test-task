@@ -46,6 +46,7 @@ const StyledCard = styled.div`
 
 const CardImg = styled.img`
   border-radius: 10px 10px 0 0;
+  aspect-ratio: 1 / 1;
 `;
 
 const CardInfo = styled.div`
