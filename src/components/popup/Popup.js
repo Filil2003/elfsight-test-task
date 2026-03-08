@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { PopupEpisodes } from './PopupEpisodes';
 import { PopupHeader } from './PopupHeader';
@@ -16,21 +17,42 @@ export function Popup({ settings: { visible, content = {} }, setSettings }) {
     episode: episodes
   } = content;
 
-  function togglePopup(e) {
-    if (e.currentTarget !== e.target) {
-      return;
-    }
-
+  const closePopup = useCallback(() => {
     setSettings((prevState) => ({
       ...prevState,
-      visible: !prevState.visible
+      visible: false
     }));
-  }
+  }, [setSettings]);
+
+  useLayoutEffect(() => {
+    if (visible) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.body.style.overflow = originalOverflow || '';
+      };
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+
+    function handleKeyDown(e) {
+      if (e.key === 'Escape') {
+        closePopup();
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [visible, closePopup]);
 
   return (
-    <PopupContainer visible={visible}>
+    <PopupContainer visible={visible} onClick={closePopup}>
       <StyledPopup>
-        <CloseIcon onClick={togglePopup} />
+        <CloseIcon onClick={closePopup} />
 
         <PopupHeader
           name={name}
