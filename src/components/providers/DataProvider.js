@@ -36,7 +36,7 @@ export function DataProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    void fetchData(apiURL);
+    void fetchData(`${apiURL}?${new URLSearchParams(window.location.search)}`);
   }, [apiURL, fetchData]);
 
   const dataValue = useMemo(
